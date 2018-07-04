@@ -1,0 +1,47 @@
+﻿<UserControl
+    x:Class="Breeze.Controls.TemperatureDisplay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Breeze.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Breeze.Converters"
+    mc:Ignorable="d"
+    x:Name="TD"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Border BorderThickness="2" BorderBrush="Silver">
+        <Grid>
+            <Grid.Resources>
+                <converters:IntToTempStringConverter x:Key="ITTSC"/>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="White" Grid.ColumnSpan="2"/>
+            <Viewbox Stretch="Uniform"  Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock Text="{Binding TargetTemperature, Mode=TwoWay, Converter={StaticResource ITTSC}, ElementName=TD, FallbackValue='--°C'}" Margin="2" FontFamily="Consolas"/>
+            </Viewbox>
+            <Border  Grid.Column="0" Grid.Row="1"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0,0,1,0" BorderBrush="Silver">
+                <Button VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="Button_Remove">
+                    <Button.Content>
+                        <SymbolIcon Symbol="Remove" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    </Button.Content>
+                </Button>
+            </Border>
+            <Border  Grid.Column="1" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="1,0,0,0" BorderBrush="Silver">
+                <Button VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Click="Button_Add">
+                    <Button.Content>
+                        <SymbolIcon Symbol="Add" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                    </Button.Content>
+                </Button>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

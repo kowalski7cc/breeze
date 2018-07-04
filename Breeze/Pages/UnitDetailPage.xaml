@@ -1,0 +1,69 @@
+﻿<Page
+    x:Class="Breeze.UnitDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Breeze"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Breeze.Controls"
+    xmlns:converters="using:Breeze.Converters"
+    mc:Ignorable="d">
+
+    <Grid Margin="0,20,0,0">
+        <Grid.Resources>
+            <converters:IntToTempStringConverter x:Key="ITTSC"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{Binding SelectedUnitData.Name, FallbackValue='Unit name here'}" MaxLines="1" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize=" 56"/>
+        <ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto" >
+            <StackPanel Margin="0,0,20,0">
+                <Grid HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition MaxWidth="100" MinWidth="10" Width="*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Off"/>
+                    <Button Content="On" Grid.Column="2"/>
+                </Grid>
+
+                <Grid DataContext="{Binding SelectedUnitData}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+
+                    <SymbolIcon Symbol="Home" Grid.Column="1" Grid.Row="1"/>
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Temperature.Actual, Converter={StaticResource ITTSC}, FallbackValue='0°C'}" FontSize="23" Grid.Column="3" Grid.Row="1"/>
+                    <SymbolIcon Symbol="Street" Grid.Column="5" Grid.Row="1"/>
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Temperature.Outside, Converter={StaticResource ITTSC}, FallbackValue='0°C'}" FontSize="23" Grid.Column="7" Grid.Row="1"/>
+                </Grid>
+
+                <Grid Margin="10,0,10,10">
+                    <controls:ModeSelection MaxHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" DaikinMode="{Binding SelectedUnitData.Mode}"/>
+                </Grid>
+
+                <Grid Margin="0,20,0,10">
+                    <controls:TemperatureDisplay HorizontalAlignment="Center" MaxHeight="250"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+        
+    </Grid>
+</Page>

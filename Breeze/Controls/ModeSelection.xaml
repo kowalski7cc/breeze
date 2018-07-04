@@ -1,0 +1,44 @@
+﻿<UserControl
+    x:Class="Breeze.Controls.ModeSelection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Breeze.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Breeze.Converters"
+    mc:Ignorable="d"
+    x:Name="MS"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid Padding="0,0,-1,0" ColumnSpacing="10">
+        <Grid.Resources>
+            <converters:SelectedModeBoolConverter DaikinMode="Auto" x:Key="ConvAuto"/>
+            <converters:SelectedModeBoolConverter DaikinMode="Cool" x:Key="ConvCool"/>
+            <converters:SelectedModeBoolConverter DaikinMode="Heat" x:Key="ConvHeat"/>
+            <converters:SelectedModeBoolConverter DaikinMode="Fan" x:Key="ConvFan"/>
+            <converters:SelectedModeBoolConverter DaikinMode="Dry" x:Key="ConvDry"/>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <local:IconMode DaikinMode="Auto" Grid.Column="0" Tapped="IconMode_Tapped" Margin="5" Colorized="{Binding DaikinMode, ElementName=MS, Converter={StaticResource ConvAuto}, Mode=TwoWay}"/>
+
+        <local:IconMode DaikinMode="Cool" Grid.Column="1" Tapped="IconMode_Tapped_1" Margin="5" Colorized="{Binding DaikinMode, ElementName=MS, Converter={StaticResource ConvCool}, Mode=TwoWay}"/>
+
+        <local:IconMode DaikinMode="Heat" Grid.Column="2" Tapped="IconMode_Tapped_2" Margin="5" Colorized="{Binding DaikinMode, ElementName=MS, Converter={StaticResource ConvHeat}, Mode=TwoWay}"/>
+
+        <local:IconMode DaikinMode="Fan" Grid.Column="3" Tapped="IconMode_Tapped_3" Margin="5" Colorized="{Binding DaikinMode, ElementName=MS, Converter={StaticResource ConvFan}, Mode=TwoWay}"/>
+
+        <local:IconMode DaikinMode="Dry" Grid.Column="4" Tapped="IconMode_Tapped_4" Margin="5" Colorized="{Binding DaikinMode, ElementName=MS, Converter={StaticResource ConvDry}, Mode=TwoWay}"/>
+        
+    </Grid>
+</UserControl>

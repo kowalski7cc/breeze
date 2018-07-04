@@ -1,0 +1,97 @@
+﻿<Page 
+    x:Class="Breeze.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Breeze"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:Windows.UI.Xaml.Media"
+    xmlns:local1="using:Breeze.Converters"
+    xmlns:controls="using:Breeze.Controls"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
+
+        <Grid.Resources>
+            <SolidColorBrush x:Key="BorderBrush" Color="Silver"/>
+
+            <DataTemplate x:Key="UnitViewControl">
+                <controls:UnitButtonSelection DaikinPower="{Binding PowerStatus, Mode=TwoWay}" UnitName="{Binding Name, FallbackValue='Unit name here', Mode=TwoWay}" ActualTemperature="{Binding Temperature.Actual, FallbackValue='0°C', Mode=TwoWay}" TargetTemperature="{Binding Temperature.Target, FallbackValue='0°C', Mode=TwoWay}" DaikinMode="{Binding Mode, Mode=TwoWay}"/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="UnitViewButton">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <controls:PowerBadge DaikinPower="{Binding PowerStatus}" Margin="10"/>
+
+                    <Grid Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Name: " Grid.Column="0" Grid.Row="0"/>
+                        <TextBlock Text="Power: " Grid.Column="0" Grid.Row="1"/>
+                        <TextBlock Text="Mode: " Grid.Column="0" Grid.Row="2"/>
+                        <TextBlock Text="Temperature: " Grid.Column="0" Grid.Row="3"/>
+
+                        <TextBlock Text="{Binding Name}" Grid.Column="2" Grid.Row="0"/>
+                        <TextBlock Text="{Binding PowerStatus}" Grid.Column="2" Grid.Row="1"/>
+                        <TextBlock Text="{Binding Mode}" Grid.Column="2" Grid.Row="2"/>
+                        <TextBlock Text="{Binding Temperature.Actual}" Grid.Column="2" Grid.Row="3"/>
+                    </Grid>
+
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ListView x:Name="UnitsListView" SelectedItem="{Binding SelectedUnitData, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged" ItemsSource="{Binding RetrivedData}" ItemTemplate="{StaticResource UnitViewControl}" RightTapped="ListView_RightTappedAsync"/>
+            <CommandBar Grid.Row="1" Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}">
+                <!---->
+                <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}" Icon="Refresh" Label="Refresh"/>
+                <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}" Icon="Add" Label="Add" Click="AddUnit_Click"/>
+                <AppBarButton Style="{StaticResource AppBarButtonRevealStyle}" Icon="Setting" Label="Settings"/>
+                <CommandBar.SecondaryCommands>
+                    <AppBarButton Icon="Help" Label="About" />
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
+            <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+                <Frame x:Name="UnitDetailFrame" Margin="20,0,0,0" />
+                <Grid x:Name="AddUnitHint">
+                    <TextBlock Text="Add a unit to begin" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Grid>
+            
+
+            <Border Grid.RowSpan="2" Grid.Column="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1 0 0 0"></Border>
+        </Grid>
+
+    </Grid>
+</Page>

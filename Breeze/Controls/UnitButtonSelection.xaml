@@ -1,0 +1,55 @@
+﻿<UserControl
+    x:Class="Breeze.Controls.UnitButtonSelection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Breeze.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local1="using:Breeze.Converters"
+    mc:Ignorable="d"
+    x:Name="UBS"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid Margin="10">
+        <Grid.Resources>
+            <local1:IntToTempStringConverter x:Key="ITTSC-Error"/>
+            <local1:IntToTempStringConverter x:Key="ITTSC"/>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <local:PowerBadge Height="25" Width="25" DaikinPower="{Binding PowerStatus}" />
+
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <SymbolIcon Symbol="Home" Grid.Row="1"/>
+            <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="{Binding UnitName, ElementName=UBS, FallbackValue='Unit name here', Mode=TwoWay}" VerticalAlignment="Center" FontSize="23" Grid.ColumnSpan="10"/>
+            <TextBlock Text="{Binding ActualTemperature, Converter={StaticResource ITTSC}, ElementName=UBS, FallbackValue='0°C', Mode=TwoWay}" Grid.Row="1" Grid.Column="2"/>
+            <local:IconMode DaikinMode="{Binding DaikinMode, Mode=TwoWay, ElementName=UBS}" Height="20" Width="20" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding TargetTemperature, ElementName=UBS, Converter={StaticResource ITTSC-Error}, FallbackValue='0°C', Mode=TwoWay}" Grid.Row="1" Grid.Column="6"/>
+        </Grid>
+
+    </Grid>
+</UserControl>
