@@ -34,6 +34,7 @@ namespace Breeze.Library
             {
                 var http = new HttpClient();
                 var response = await http.GetStringAsync("http://" + Host + request);
+                Debug.WriteLine(response);
                 stringBuilder.Append(response + ",");
             }
             return DaikinDecoder.Decode(stringBuilder.ToString());

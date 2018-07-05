@@ -29,96 +29,56 @@ namespace Breeze
     /// <summary>
     /// Pagina vuota che può essere usata autonomamente oppure per l'esplorazione all'interno di un frame.
     /// </summary>
+    /// 
     public sealed partial class MainPage : Page
     {
+        Windows.Storage.ApplicationDataContainer localSettings =
+    Windows.Storage.ApplicationData.Current.LocalSettings;
+        LinkedList<Daikin> units = new LinkedList<Daikin>();
 
         Daikin[] hosts = new Daikin[]
         {
-            new Daikin("192.168.0.152"),
-            new Daikin("192.168.0.156"),
-            new Daikin("192.168.0.132")
+            new Daikin("192.168.0.215"),
+            //new Daikin("192.168.0.214"),
+            //new Daikin("192.168.0.213")
         };
 
         public MainPage()
         {
             this.InitializeComponent();
-
-            var a = new DaikinData[]
-            {
-                new DaikinData()
-                {
-                    Name = "Office",
-                    PowerStatus = Library.Options.PowerStatus.On,
-                    Mode = Library.Options.Mode.Heat,
-                    Temperature = new Library.Options.Temperature()
-                    {
-                        Actual = 21,
-                        Target = 23,
-                        Outside = 15
-                    }
-                },
-                new DaikinData()
-                {
-                    Name = "Livingroom",
-                    PowerStatus = Library.Options.PowerStatus.Off,
-                    Mode = Library.Options.Mode.Auto,
-                    Temperature = new Library.Options.Temperature()
-                    {
-                        Actual = 22,
-                        Target = 22,
-                        Outside = 15
-                    }
-                },
-                new DaikinData()
-                {
-                    Name = "Bedroom",
-                    PowerStatus = Library.Options.PowerStatus.Off,
-                    Mode = Library.Options.Mode.Fan,
-                    Temperature = new Library.Options.Temperature()
-                    {
-                        Actual = 20,
-                        Target = null,
-                        Outside = 15
-                    }
-                },
-                new DaikinData()
-                {
-                    Name = "Kitchen",
-                    PowerStatus = Library.Options.PowerStatus.Off,
-                    Mode = Library.Options.Mode.Cool,
-                    Temperature = new Library.Options.Temperature()
-                    {
-                        Actual = 24,
-                        Target = 22,
-                        Outside = 15
-                    }
-                },
-                new DaikinData()
-                {
-                    Name = "Whatever",
-                    PowerStatus = Library.Options.PowerStatus.Off,
-                    Mode = Library.Options.Mode.Dry,
-                    Temperature = new Library.Options.Temperature()
-                    {
-                        Actual = 20,
-                        Target = null,
-                        Outside = 15
-                    }
-                },
-            };
-
+            Debug.WriteLine("Creating data object");
             var data = new UnitDataView()
             {
-                RetrivedData = a,
+                //RetrivedData = new DaikinData[hosts.Length]
             };
 
+            if (hosts.Length > 0)
+            {
+                Debug.WriteLine("Found units! Polling");
+                for (int i = 0; i < hosts.Length; i++)
+                {
+                    Debug.WriteLine("------START POLLING OF " + hosts[i].Host + "-----------");
+                    hosts[i].GetStatus().Wait();
+                    data.RetrivedData[i] = hosts[i].GetStatus().Result;
+                    Debug.WriteLine("------END POLLING OF " + hosts[i].ToString() + "-----------");
+                }
+                Debug.Write("Polling ended");
+                data.SelectedUnitData = data.RetrivedData[0];
+            }          
+
             DataContext = data;
+            refreshView();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (((UnitDataView)DataContext).RetrivedData.Length > 0)
+        }
+
+
+        private void refreshView()
+        {
+            if ((((UnitDataView)DataContext).RetrivedData != null) && ((UnitDataView)DataContext).RetrivedData.Length > 0)
             {
                 AddUnitHint.Visibility = Visibility.Collapsed;
                 UnitsListView.SelectedIndex = 0;
@@ -162,7 +122,7 @@ namespace Breeze
         private async void AddUnit_Click(object sender, RoutedEventArgs e)
         {
             String address = await InputTextDialogAsync("Insert host address");
-            if (address != null && address.Length == 0)
+            if (address != null && address.Length > 0)
             {
                 IPAddress a;
                 bool r = IPAddress.TryParse(address, out a);
@@ -179,9 +139,25 @@ namespace Breeze
                         return;
                     }
                 }
+                if(a!=null)
+                {
+                    units.AddLast(new Daikin(a.ToString()));
+                }
                 Debug.WriteLine(a!=null?"Inserted IP: " + a.ToString():"Invalid ip inserted");
 
-                
+
+                DaikinData newData = await units.First.Value.GetStatus();
+
+                DataContext = new UnitDataView()
+                {
+                    RetrivedData = new DaikinData[]
+                    {
+                        newData
+                    },
+                    SelectedUnitData = newData
+
+                };
+                refreshView();
             }
         }
 
