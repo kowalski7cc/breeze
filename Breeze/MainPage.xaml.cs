@@ -32,16 +32,9 @@ namespace Breeze
     /// 
     public sealed partial class MainPage : Page
     {
-        Windows.Storage.ApplicationDataContainer localSettings =
-    Windows.Storage.ApplicationData.Current.LocalSettings;
+        Windows.Storage.ApplicationDataContainer localSettings = 
+            Windows.Storage.ApplicationData.Current.LocalSettings;
         LinkedList<Daikin> units = new LinkedList<Daikin>();
-
-        Daikin[] hosts = new Daikin[]
-        {
-            new Daikin("192.168.0.215"),
-            //new Daikin("192.168.0.214"),
-            //new Daikin("192.168.0.213")
-        };
 
         public MainPage()
         {
@@ -50,21 +43,7 @@ namespace Breeze
             var data = new UnitDataView()
             {
                 //RetrivedData = new DaikinData[hosts.Length]
-            };
-
-            if (hosts.Length > 0)
-            {
-                Debug.WriteLine("Found units! Polling");
-                for (int i = 0; i < hosts.Length; i++)
-                {
-                    Debug.WriteLine("------START POLLING OF " + hosts[i].Host + "-----------");
-                    hosts[i].GetStatus().Wait();
-                    data.RetrivedData[i] = hosts[i].GetStatus().Result;
-                    Debug.WriteLine("------END POLLING OF " + hosts[i].ToString() + "-----------");
-                }
-                Debug.Write("Polling ended");
-                data.SelectedUnitData = data.RetrivedData[0];
-            }          
+            };     
 
             DataContext = data;
             refreshView();
@@ -80,6 +59,7 @@ namespace Breeze
         {
             if ((((UnitDataView)DataContext).RetrivedData != null) && ((UnitDataView)DataContext).RetrivedData.Length > 0)
             {
+                UnitDetailFrame.Visibility = Visibility.Visible;
                 AddUnitHint.Visibility = Visibility.Collapsed;
                 UnitsListView.SelectedIndex = 0;
                 ((UnitDataView)DataContext).SelectedUnitData = ((UnitDataView)DataContext).RetrivedData.First();
@@ -88,6 +68,7 @@ namespace Breeze
             else
             {
                 UnitDetailFrame.Visibility = Visibility.Collapsed;
+                AddUnitHint.Visibility = Visibility.Visible;
             }
         }
 

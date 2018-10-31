@@ -119,6 +119,7 @@
     <Compile Include="Converters\ModeToEnabledConverter.cs" />
     <Compile Include="Converters\ModeToSvgConverter.cs" />
     <Compile Include="Converters\OppositConverter.cs" />
+    <Compile Include="Converters\PowerStatusToBooleanConverter.cs" />
     <Compile Include="Converters\PowerToBrushConverter.cs" />
     <Compile Include="Converters\SelectedModeConverter.cs" />
     <Compile Include="MainPage.xaml.cs">

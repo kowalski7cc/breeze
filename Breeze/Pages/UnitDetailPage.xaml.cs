@@ -32,20 +32,8 @@ namespace Breeze
         {
             this.InitializeComponent();
 
-            var test = new DaikinData()
-            {
-                Name = "Camera",
-                PowerStatus = Library.Options.PowerStatus.On,
-                Mode = Library.Options.Mode.Heat,
-                Temperature = new Library.Options.Temperature
-                {
-                    Actual = 21
-                }
-            };
-
             var data = new DetailPageData()
             {
-                DaikinData = test,
             };
 
             DataContext = data;

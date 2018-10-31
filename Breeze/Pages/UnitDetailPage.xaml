@@ -20,15 +20,7 @@
         <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="{Binding SelectedUnitData.Name, FallbackValue='Unit name here'}" MaxLines="1" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize=" 56"/>
         <ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto" >
             <StackPanel Margin="0,0,20,0">
-                <Grid HorizontalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition MaxWidth="100" MinWidth="10" Width="*"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Button Content="Off"/>
-                    <Button Content="On" Grid.Column="2"/>
-                </Grid>
+                <ToggleSwitch HorizontalAlignment="Center" DataContext="{Binding SelectedUnitData.}"/>
 
                 <Grid DataContext="{Binding SelectedUnitData}">
                     <Grid.ColumnDefinitions>
